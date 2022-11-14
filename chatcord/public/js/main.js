@@ -1,7 +1,18 @@
 const chatForm = document.getElementById('chat-form')
 const chatMessages = document.querySelector('.chat-messages')
 
+// Get username and room from URL using qs
+// Remember to add qs CDN in chat.html
+// TIP: IF you use React Router, you can use the useParams hook to get the username and room or you can use qs library as an npm package (npm i qs)
+const { username, room } = Qs.parse(location.search, {
+  // Ignore prefixed symbols
+  ignoreQueryPrefix: true,
+})
+
 const socket = io()
+
+// Join chatroom
+socket.emit('joinRoom', { username, room })
 
 // Message from server
 socket.on('message', message => {
