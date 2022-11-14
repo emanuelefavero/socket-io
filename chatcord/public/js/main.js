@@ -1,5 +1,7 @@
 const chatForm = document.getElementById('chat-form')
 const chatMessages = document.querySelector('.chat-messages')
+const roomName = document.getElementById('room-name')
+const userList = document.getElementById('users')
 
 // Get username and room from URL using qs
 // Remember to add qs CDN in chat.html
@@ -15,7 +17,7 @@ const socket = io()
 socket.emit('joinRoom', { username, room })
 
 // Message from server
-socket.on('message', message => {
+socket.on('message', (message) => {
   console.log(message)
   outputMessage(message)
 
@@ -23,8 +25,16 @@ socket.on('message', message => {
   chatMessages.scrollTop = chatMessages.scrollHeight
 })
 
+// Get room and users
+socket.on('roomUsers', ({ room, users }) => {
+  roomName.innerText = room
+  userList.innerHTML = `
+    ${users.map((user) => `<li>${user.username}</li>`).join('')}
+  `
+})
+
 // Message submit
-chatForm.addEventListener('submit', e => {
+chatForm.addEventListener('submit', (e) => {
   e.preventDefault()
 
   // Get message text from the input (using the id of the input, SEE id='msg' in chat.html)
@@ -38,6 +48,8 @@ chatForm.addEventListener('submit', e => {
   e.target.elements.msg.focus()
 })
 
+// TODO: Change the color of your username (or your message card) to be different from the other users
+
 // Output message to DOM
 function outputMessage(message) {
   const div = document.createElement('div')
@@ -47,4 +59,9 @@ function outputMessage(message) {
     ${message.text}
   </p>`
   document.querySelector('.chat-messages').appendChild(div)
+}
+
+// Add room name to DOM
+function outputRoomName(room) {
+  roomName.innerText = room
 }
