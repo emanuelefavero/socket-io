@@ -6,9 +6,9 @@ const server = http.createServer(app)
 const { Server } = require('socket.io')
 const io = new Server(server)
 
-io.on('connection', (socket) => {
+io.on('connection', socket => {
   console.log('a user connected')
-  socket.emit('user connected', 'A user connected')
+  socket.broadcast.emit('user-connected', 'A user connected')
 
   socket.on('ping', () => {
     socket.emit('pong')
@@ -16,7 +16,7 @@ io.on('connection', (socket) => {
 
   socket.on('disconnect', () => {
     console.log('user disconnected')
-    socket.emit('user disconnected', 'A user disconnected')
+    io.emit('user-disconnected', 'A user disconnected')
   })
 })
 

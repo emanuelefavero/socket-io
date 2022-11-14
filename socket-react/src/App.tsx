@@ -5,6 +5,8 @@ const socket = io()
 
 function App() {
   const [isConnected, setIsConnected] = useState(socket.connected)
+  const [showUserConnected, setShowUserConnected] = useState('')
+  const [showUserDisconnected, setShowUserDisconnected] = useState('')
   const [lastPong, setLastPong] = useState<String | null>(null)
 
   useEffect(() => {
@@ -14,6 +16,22 @@ function App() {
 
     socket.on('disconnect', () => {
       setIsConnected(false)
+    })
+
+    socket.on('user-connected', message => {
+      setShowUserConnected(message)
+
+      setTimeout(() => {
+        setShowUserConnected('')
+      }, 2000)
+    })
+
+    socket.on('user-disconnected', message => {
+      setShowUserDisconnected(message)
+
+      setTimeout(() => {
+        setShowUserDisconnected('')
+      }, 2000)
     })
 
     socket.on('pong', () => {
@@ -34,6 +52,8 @@ function App() {
   return (
     <>
       <p>Connected: {'' + isConnected}</p>
+      <h2>{showUserConnected}</h2>
+      <h2>{showUserDisconnected}</h2>
       <p>Last pong: {lastPong || '-'}</p>
       <button onClick={sendPing}>Send ping</button>
     </>
