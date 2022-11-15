@@ -106,6 +106,10 @@ a {
   margin-bottom: 7px;
 }
 
+.chat-messages .message .meta.current-user {
+  color: var(--success-color);
+}
+
 .chat-messages .message .meta span {
   color: #777;
 }
