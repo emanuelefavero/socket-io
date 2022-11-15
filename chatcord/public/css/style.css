@@ -137,7 +137,6 @@ input:focus {
 }
 
 .chat-messages {
-  /* padding: 30px; */
   max-height: 500px;
   overflow-y: scroll;
   background-color: var(--bg-chat-color);
@@ -148,7 +147,6 @@ input:focus {
   margin-bottom: 15px;
   background-color: var(--bg-message-color);
   color: var(--light-color);
-  /* border-radius: 5px; */
 }
 
 .chat-messages .message .meta {
